@@ -13,9 +13,10 @@
     <a-scene
         vr-mode-ui="enabled: false"
         embedded
-        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
+        arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'
+        init="setInitialLocation">
 
-        <a-camera id="kamera" gps-camera rotation-reader></a-camera>
+        <a-camera id="kamera" gps-camera="refreshInterval: 500" rotation-reader></a-camera>
         <a-entity id="model" gltf-model="./assets/asset.gltf" rotation="0 0 0" scale="0.005 0.005 0.005" animation-mixer/>
 
     </a-scene>
@@ -26,15 +27,10 @@
             const initialLatitude = 39.880675; // Replace with your desired initial latitude
             const initialLongitude = 32.835736; // Replace with your desired initial longitude
 
-            const cameraEntity = document.querySelector('#kamera');
-            cameraEntity.setAttribute('gps-entity-place', `latitude: ${initialLatitude}; longitude: ${initialLongitude};`);
 
             const modelEntity = document.querySelector('#model');
             modelEntity.setAttribute('gps-entity-place', `latitude: ${initialLatitude}; longitude: ${initialLongitude};`);
         }
-
-        // Call the function to set the initial location when the scene is loaded
-        window.addEventListener('DOMContentLoaded', setInitialLocation);
     </script>
 </body>
 </html>
