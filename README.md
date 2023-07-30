@@ -1,2 +1,2 @@
-# arjs_test
-arjs_test
+# ar-js-example-locationbased
+Example project for location-based WebAR
