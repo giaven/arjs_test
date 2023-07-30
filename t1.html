@@ -23,7 +23,7 @@
             gps-entity-place="latitude: 39.880675; longitude: 32.835736;"
             animation-mixer
             scale-based-on-distance
-            model-height="2.5">
+            original-height="2.5">
         </a-entity>
     </a-scene>
 
@@ -41,14 +41,11 @@
                 // Calculate the distance between the camera and the entity.
                 var distance = cameraPosition.distanceTo(modelPosition);
 
-                // Get the desired height for the model (in this case, 2.5 meters).
-                var desiredHeight = parseFloat(modelEntity.getAttribute('model-height'));
+                // Get the original height of the model (in this case, 2.5 meters).
+                var originalHeight = parseFloat(modelEntity.getAttribute('original-height'));
 
-                // Calculate the current height of the model based on the distance from the camera.
-                var currentHeight = distance * Math.tan(modelEntity.object3D.rotation.x);
-
-                // Calculate the scale factor to lock the model's height to the desired height.
-                var scale = desiredHeight / currentHeight;
+                // Calculate the scale factor to dynamically scale the model.
+                var scale = originalHeight / distance;
                 modelEntity.object3D.scale.set(scale, scale, scale);
             }
         });
