@@ -7,21 +7,34 @@
     <script src='https://aframe.io/releases/1.4.2/aframe.min.js'></script>
     <script src="./assets/aframe-ar.js"></script>
     <script src="./assets/aframe-extras.loaders.min.js"></script>
-<!--    <script>-->
-<!--        THREEx.ArToolkitContext.baseURL = 'https://raw.githubusercontent.com/chelewy/infAR/main'-->
-<!--    </script>-->
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
     <a-scene
         vr-mode-ui="enabled: false"
-		embedded
+        embedded
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
 
-        <a-camera id="kamera" gps-camera="refreshInterval: 500" rotation-reader></a-camera>
-        <a-entity id="model" gltf-model="./assets/asset.gltf" rotation="0 0 0" scale="0.005 0.005 0.005" gps-entity-place="latitude: 39.880675; longitude: 32.835736;" animation-mixer/>
+        <a-camera id="kamera" gps-camera rotation-reader></a-camera>
+        <a-entity id="model" gltf-model="./assets/asset.gltf" rotation="0 0 0" scale="0.005 0.005 0.005" animation-mixer/>
 
-	</a-scene>
+    </a-scene>
 
+    <script>
+        // Function to set the initial GPS position of the camera and model
+        function setInitialLocation() {
+            const initialLatitude = 39.880675; // Replace with your desired initial latitude
+            const initialLongitude = 32.835736; // Replace with your desired initial longitude
+
+            const cameraEntity = document.querySelector('#kamera');
+            cameraEntity.setAttribute('gps-entity-place', `latitude: ${initialLatitude}; longitude: ${initialLongitude};`);
+
+            const modelEntity = document.querySelector('#model');
+            modelEntity.setAttribute('gps-entity-place', `latitude: ${initialLatitude}; longitude: ${initialLongitude};`);
+        }
+
+        // Call the function to set the initial location when the scene is loaded
+        window.addEventListener('DOMContentLoaded', setInitialLocation);
+    </script>
 </body>
 </html>
