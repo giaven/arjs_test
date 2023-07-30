@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Web AR App with Location Lock</title>
+    <script src="./assets/aframe-ar.js"></script>
+    <script src="./assets/aframe-extras.loaders.min.js"></script>
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/webxr-polyfill@latest/build/webxr-polyfill.js"></script>
 </head>
@@ -9,7 +11,7 @@
     <a-scene
         vr-mode-ui="enabled: false"
         embedded
-        xr-webgl="optionalFeatures: hit-test"
+        arjs="sourceType: webcam; debugUIEnabled: false;"
     >
         <!-- Add the rectangular model anchored to the user's location -->
         <a-entity
