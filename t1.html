@@ -19,29 +19,9 @@
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
 
         <a-camera id="kamera" gps-camera rotation-reader></a-camera>
-        <a-entity id="model" gltf-model="./assets/asset.gltf" rotation="0 180 0" scale="0.005 0.005 0.005" animation-mixer/>
+        <a-entity id="model" gltf-model="./assets/asset.gltf" rotation="0 0 0" scale="0.005 0.005 0.005" gps-entity-place="latitude: 39.880675; longitude: 32.835736;" animation-mixer/>
 
 	</a-scene>
 
-    <script>
-        // Kamera ve 3D model için referansları alın
-        var kamera = document.getElementById('kamera');
-        var model = document.getElementById('model');
-
-        // GPS konum izleyicisi oluşturun
-        var gpsIzleyici = navigator.geolocation.watchPosition(
-            function (pozisyon) {
-                // Yeni konumu alın
-                var enlem = pozisyon.coords.latitude;
-                var boylam = pozisyon.coords.longitude;
-
-                // 3D modelin konumunu güncelleyin
-                model.setAttribute('gps-entity-place', 'latitude: ' + enlem + '; longitude: ' + boylam + ';');
-            },
-            function (hata) {
-                console.error('Konum izleyicisinde bir hata oluştu: ' + hata.message);
-            }
-        );
-    </script>
 </body>
 </html>
