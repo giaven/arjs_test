@@ -19,7 +19,30 @@
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
         
         <a-camera id="camera" gps-camera rotation-reader></a-camera>
-        <a-entity look-at="#camera" gltf-model="./assets/asset.gltf" rotation="0 180 0" scale="0.005 0.005 0.005" gps-entity-place="latitude: 39.880675; longitude: 32.835736;" animation-mixer/>
+        <a-entity id="modelEntity" gltf-model="./assets/asset.gltf" rotation="0 180 0" scale="0.005 0.005 0.005" gps-entity-place="latitude: 39.880675; longitude: 32.835736;" animation-mixer/>
 	</a-scene>
+
+    <script>
+        AFRAME.registerComponent('scale-based-on-distance', {
+            schema: { default: 1 },
+            tick: function () {
+                var cameraPosition = new THREE.Vector3();
+                var modelPosition = new THREE.Vector3();
+                var modelEntity = document.getElementById('modelEntity');
+                var camera = document.getElementById('camera');
+                
+                // Get the positions of the camera and the entity (3D model).
+                camera.object3D.getWorldPosition(cameraPosition);
+                modelEntity.object3D.getWorldPosition(modelPosition);
+
+                // Calculate the distance between the camera and the entity.
+                var distance = cameraPosition.distanceTo(modelPosition);
+
+                // Update the scale of the entity based on the distance from the camera.
+                var newScale = distance * this.data;
+                modelEntity.object3D.scale.set(newScale, newScale, newScale);
+            }
+        });
+    </script>
 </body>
 </html>
