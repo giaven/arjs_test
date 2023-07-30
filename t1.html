@@ -14,22 +14,39 @@
         vr-mode-ui="enabled: false"
         embedded
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'
-        init="setInitialLocation">
+        init="setInitialCameraLocation">
 
-        <a-camera id="kamera" gps-camera="refreshInterval: 500" rotation-reader></a-camera>
+        <a-camera id="kamera" gps-camera rotation-reader></a-camera>
         <a-entity id="model" gltf-model="./assets/asset.gltf" rotation="0 0 0" scale="0.005 0.005 0.005" animation-mixer/>
 
     </a-scene>
 
     <script>
-        // Function to set the initial GPS position of the camera and model
-        function setInitialLocation() {
+        // Function to set the initial GPS position of the camera
+        function setInitialCameraLocation() {
             const initialLatitude = 39.880675; // Replace with your desired initial latitude
             const initialLongitude = 32.835736; // Replace with your desired initial longitude
 
+            const cameraEntity = document.querySelector('#kamera');
+            cameraEntity.setAttribute('gps-entity-place', `latitude: ${initialLatitude}; longitude: ${initialLongitude};`);
 
-            const modelEntity = document.querySelector('#model');
-            modelEntity.setAttribute('gps-entity-place', `latitude: ${initialLatitude}; longitude: ${initialLongitude};`);
+            // Call the updateCameraPosition function every 0.5 seconds
+            setInterval(updateCameraPosition, 500);
+        }
+
+        // Function to update the GPS position of the camera every 0.5 seconds
+        function updateCameraPosition() {
+            const cameraEntity = document.querySelector('#kamera');
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    cameraEntity.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude};`);
+                },
+                (error) => {
+                    console.error('Error getting GPS position:', error);
+                }
+            );
         }
     </script>
 </body>
