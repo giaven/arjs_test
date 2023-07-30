@@ -23,34 +23,30 @@
             gps-entity-place="latitude: 39.880675; longitude: 32.835736;"
             animation-mixer
             scale-based-on-distance
-            original-height="2.5">
+            original-height="0.0025">
         </a-entity>
     </a-scene>
 
     <script>
         AFRAME.registerComponent('scale-based-on-distance', {
             tick: function () {
-                var cameraPosition = new THREE.Vector3();
-                var modelPosition = new THREE.Vector3();
-                var modelEntity = this.el; // Reference to the entity.
+                var camera = this.el.sceneEl.camera;
+                var modelEntity = this.el;
 
-                // Get the positions of the camera and the entity (3D model).
-                this.el.sceneEl.camera.getWorldPosition(cameraPosition);
-                modelEntity.object3D.getWorldPosition(modelPosition);
-
-                // Calculate the original height of the model (in this case, 2.5 meters).
+                // Get the original height of the model (in this case, 2.5 meters).
                 var originalHeight = parseFloat(modelEntity.getAttribute('original-height'));
 
-                // Calculate the initial distance between the camera and the entity at scene load.
-                if (!modelEntity.initialDistance) {
-                    modelEntity.initialDistance = cameraPosition.distanceTo(modelPosition);
-                }
+                // Calculate the distance from the camera to the entity.
+                var distance = camera.getAttribute('gps-camera').distance;
 
-                // Calculate the current distance between the camera and the entity.
-                var currentDistance = cameraPosition.distanceTo(modelPosition);
+                // Calculate the camera's field of view (FOV) in radians.
+                var fovRad = (camera.fov * Math.PI) / 180;
 
-                // Calculate the scale factor to dynamically scale the model based on the difference in distance.
-                var scale = (modelEntity.initialDistance / currentDistance) * originalHeight;
+                // Calculate the model's apparent height based on the distance and FOV.
+                var modelApparentHeight = 2 * distance * Math.tan(fovRad / 2);
+
+                // Calculate the scale factor to dynamically scale the model.
+                var scale = originalHeight / modelApparentHeight;
                 modelEntity.object3D.scale.set(scale, scale, scale);
             }
         });
