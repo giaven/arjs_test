@@ -7,49 +7,19 @@
     <script src='https://aframe.io/releases/1.4.2/aframe.min.js'></script>
     <script src="./assets/aframe-ar.js"></script>
     <script src="./assets/aframe-extras.loaders.min.js"></script>
+<!--    <script>-->
+<!--        THREEx.ArToolkitContext.baseURL = 'https://raw.githubusercontent.com/chelewy/infAR/main'-->
+<!--    </script>-->
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
     <a-scene
         vr-mode-ui="enabled: false"
-        embedded
+		embedded
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
-
-        <a-camera id="camera" gps-camera rotation-reader></a-camera>
-        <a-entity
-            id="modelEntity"
-            gltf-model="./assets/asset.gltf"
-            rotation="0 180 0"
-            gps-entity-place="latitude: 39.880675; longitude: 32.835736;"
-            animation-mixer
-            scale-based-on-distance
-            original-height="0.0025">
-        </a-entity>
-    </a-scene>
-
-    <script>
-        AFRAME.registerComponent('scale-based-on-distance', {
-            tick: function () {
-                var camera = this.el.sceneEl.camera;
-                var modelEntity = this.el;
-
-                // Get the original height of the model (in this case, 2.5 meters).
-                var originalHeight = parseFloat(modelEntity.getAttribute('original-height'));
-
-                // Calculate the distance from the camera to the entity.
-                var distance = camera.getAttribute('gps-camera').distance;
-
-                // Calculate the camera's field of view (FOV) in radians.
-                var fovRad = (camera.fov * Math.PI) / 180;
-
-                // Calculate the model's apparent height based on the distance and FOV.
-                var modelApparentHeight = 2 * distance * Math.tan(fovRad / 2);
-
-                // Calculate the scale factor to dynamically scale the model.
-                var scale = originalHeight / modelApparentHeight;
-                modelEntity.object3D.scale.set(scale, scale, scale);
-            }
-        });
-    </script>
+        
+        <a-camera gps-camera rotation-reader></a-camera>
+        <a-entity gltf-model="./assets/asset.gltf" rotation="0 180 0" scale="0.005 0.005 0.005" gps-entity-place="latitude: 39.880675; longitude: 32.835736;" animation-mixer/>
+	</a-scene>
 </body>
 </html>
