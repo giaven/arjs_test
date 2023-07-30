@@ -9,12 +9,13 @@
 </head>
 <body>
   <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+      
+    <a-camera gps-camera rotation-reader></a-camera>
     <!-- Place the 3D model at GPS coordinates (latitude, longitude, altitude). -->
     <a-entity gps-entity-place="latitude: 39.880675; longitude: 32.835736;">
       <!-- Replace 'your_model.gltf' with your 3D model file. -->
       <a-entity gltf-model="./assets/asset.gltf" rotation="0 180 0" scale="0.005 0.005 0.005"></a-entity>
     </a-entity>
-    <a-camera-static/>
   </a-scene>
 </body>
 </html>
