@@ -19,7 +19,63 @@
         arjs='sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;'>
         
         <a-camera gps-camera rotation-reader></a-camera>
-        <a-entity gltf-model="./assets/asset.gltf" rotation="0 0 0" scale="0.005 0.005 0.005" gps-entity-place="latitude: 39.880675; longitude: 32.835736;" animation-mixer/>
+        <a-entity gltf-model="./assets/asset.gltf" rotation="0 -180 0" scale="0.005 0.005 0.005" gps-entity-place="latitude: 39.880675; longitude: 32.835736;" animation-mixer/>
 	</a-scene>
+<!-- Inside the <script> tag or in a separate JavaScript file -->
+<script>
+  // Get a reference to the <a-entity> element representing the 3D model
+  const modelEntity = document.querySelector('a-entity[gltf-model="./assets/asset.gltf"]');
+
+  // Function to calculate the scale based on distance
+  function calculateScale(distance, desiredSize) {
+    // You need to define a conversion factor that maps the distance to the desired size.
+    // This factor will depend on the specific units used for the distance and desired size.
+    // For example, if you want the model to be 1 meter wide when it's 10 meters away:
+    const conversionFactor = desiredSize / 10; // 10 meters -> desiredSize
+
+    // Calculate the scale based on the distance and conversion factor
+    const scale = distance * conversionFactor;
+    
+    // Set the scale of the 3D model
+    modelEntity.setAttribute('scale', `${scale} ${scale} ${scale}`);
+  }
+
+  // Function to calculate the distance between two GPS coordinates
+  function calculateDistance(latitude1, longitude1, latitude2, longitude2) {
+    // You can use the Haversine formula to calculate the distance between two GPS coordinates.
+    // I'll provide a simple implementation for demonstration purposes:
+
+    const degToRad = (deg) => deg * (Math.PI / 180);
+    
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = degToRad(latitude2 - latitude1);
+    const dLon = degToRad(longitude2 - longitude1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(degToRad(latitude1)) * Math.cos(degToRad(latitude2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c * 1000; // Convert to meters
+
+    return distance;
+  }
+
+  // Example: Assume user's current GPS coordinates (latitude and longitude)
+  const userLatitude = 39.880123;
+  const userLongitude = 32.835456;
+
+  // Example: GPS coordinates of the 3D model
+  const modelLatitude = 39.880675;
+  const modelLongitude = 32.835736;
+
+  // Example: Desired size of the model in the real world when it's 10 meters away
+  const desiredSize = 1; // 1 meter
+
+  // Calculate the distance between the user and the 3D model
+  const distanceToModel = calculateDistance(userLatitude, userLongitude, modelLatitude, modelLongitude);
+
+  // Calculate the scale based on the distance
+  calculateScale(distanceToModel, desiredSize);
+</script>
 </body>
 </html>
